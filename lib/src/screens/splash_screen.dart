@@ -49,6 +49,12 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   }
 
   @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
@@ -66,7 +72,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
             builder: (BuildContext context, child) {
               return CustomPaint(
                 size: MediaQuery.of(context).size,
-                painter: _SplashBottomWaver(primaryColor: Theme.of(context).primaryColor.withOpacity(1.0 - fadeOut.value), secondaryColor: Theme.of(context).colorScheme.secondary.withOpacity(1.0 - fadeOut.value))
+                painter: _SplashBackgroundWaver(primaryColor: Theme.of(context).primaryColor.withOpacity(1.0 - fadeOut.value), secondaryColor: Theme.of(context).colorScheme.secondary.withOpacity(1.0 - fadeOut.value))
               );
             }
           ),
@@ -111,10 +117,10 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   }
 }
 
-class _SplashBottomWaver extends CustomPainter{
+class _SplashBackgroundWaver extends CustomPainter{
   final Color primaryColor;
   final Color secondaryColor;
-  _SplashBottomWaver({
+  _SplashBackgroundWaver({
     required this.primaryColor,
     required this.secondaryColor
   });

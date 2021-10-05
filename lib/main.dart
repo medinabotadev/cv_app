@@ -109,8 +109,8 @@ class MyApp extends StatelessWidget {
           ),
         )
       ),
-      themeMode: ThemeMode.light,
-      initialRoute: '/SplashScreen',
+      themeMode: ThemeMode.dark,
+      initialRoute: '/HomeScreen',
       routes: getRoutes(context),
     );
   }

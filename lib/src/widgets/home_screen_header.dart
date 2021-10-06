@@ -13,7 +13,7 @@ class HomeScreenHeader extends StatefulWidget {
 
 class _HomeScreenHeaderState extends State<HomeScreenHeader> with SingleTickerProviderStateMixin{
   late AnimationController animationController;
-  late Animation<double>   moveHeaderUp;
+  late Animation<double>   moveHeaderRight;
   late Animation<double>   fadeHeaderIn;
 
   @override
@@ -22,8 +22,8 @@ class _HomeScreenHeaderState extends State<HomeScreenHeader> with SingleTickerPr
     fadeHeaderIn  = Tween(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: animationController, curve: const Interval(0.0, 0.25, curve: Curves.easeInOutExpo))
     );
-    moveHeaderUp  = Tween(begin: 200.0, end: 0.0).animate(
-      CurvedAnimation(parent: animationController, curve: const Interval(0.0, 0.25, curve: Curves.easeInOutExpo))
+    moveHeaderRight  = Tween(begin: -200.0, end: 0.0).animate(
+      CurvedAnimation(parent: animationController, curve: const Interval(0.0, 0.25, curve: Curves.elasticOut))
     );
     super.initState();
   }
@@ -39,10 +39,10 @@ class _HomeScreenHeaderState extends State<HomeScreenHeader> with SingleTickerPr
       animation: animationController,
       builder: (BuildContext context, child){
           return Positioned(
-          left: 0,
-          top: moveHeaderUp.value,
+          left: moveHeaderRight.value,
+          top: 0,
           child: Opacity(
-            opacity: fadeHeaderIn.value,
+            opacity: 1,
             child: widget.child
           ),
         );

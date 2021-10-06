@@ -96,8 +96,8 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Jesús', style: Theme.of(context).textTheme.headline2!.merge(TextStyle(fontWeight: FontWeight.w100, fontStyle: FontStyle.italic  , color: Theme.of(context).colorScheme.brightness != Brightness.light ? Theme.of(context).primaryColor : Theme.of(context).colorScheme.secondary)),),
-                        Text('Medina', style: Theme.of(context).textTheme.headline2!.merge(TextStyle(fontWeight: FontWeight.w700, fontStyle: FontStyle.italic , color: Theme.of(context).colorScheme.brightness != Brightness.light ? Theme.of(context).primaryColor : Theme.of(context).colorScheme.secondary))),
+                        Text('Jesús', style: Theme.of(context).textTheme.headline2!.merge(TextStyle(fontWeight: FontWeight.w100, fontStyle: FontStyle.italic  , color: Theme.of(context).colorScheme.brightness != Brightness.light ? Theme.of(context).primaryColor : Theme.of(context).hintColor)),),
+                        Text('Medina', style: Theme.of(context).textTheme.headline2!.merge(TextStyle(fontWeight: FontWeight.w700, fontStyle: FontStyle.italic , color: Theme.of(context).colorScheme.brightness != Brightness.light ? Theme.of(context).primaryColor : Theme.of(context).hintColor))),
                         Row(
                           children: <Widget>[
                             SvgPicture.asset('assets/img/flutter.svg'),

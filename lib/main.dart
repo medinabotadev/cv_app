@@ -48,7 +48,8 @@ class MyApp extends StatelessWidget {
           ),
           headline4: TextStyle(
             fontFamily: 'NunitoSans',
-            height: 1.0
+            fontWeight: FontWeight.w700,
+            height: 1.4
           ),
           headline5: TextStyle(
             fontFamily: 'NunitoSans',
@@ -74,10 +75,10 @@ class MyApp extends StatelessWidget {
           ),
         dividerColor: Theme.of(context).primaryColor.withOpacity(0.2),
         focusColor: Theme.of(context).primaryColor,
-        hintColor: const Color(0xFF474747),
+        hintColor: const Color(0xFFa8a7a8),
         iconTheme: const IconThemeData(
           size: 30.0,
-          color: Color(0xFF474747)
+          color: Color(0xFFa8a7a8)
         ),
         textTheme: const TextTheme(
           headline1: TextStyle(
@@ -97,7 +98,9 @@ class MyApp extends StatelessWidget {
           ),
           headline4: TextStyle(
             fontFamily: 'NunitoSans',
-            height: 1.0
+            color: Color(0xFFFFFFFF),
+            fontWeight: FontWeight.w700,
+            height: 1.4
           ),
           headline5: TextStyle(
             fontFamily: 'NunitoSans',
@@ -109,8 +112,8 @@ class MyApp extends StatelessWidget {
           ),
         )
       ),
-      themeMode: ThemeMode.dark,
-      initialRoute: '/HomeScreen',
+      themeMode: ThemeMode.light,
+      initialRoute: '/SplashScreen',
       routes: getRoutes(context),
     );
   }

@@ -1,10 +1,12 @@
-import 'dart:math';
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
-import 'package:my_cv_app/src/widgets/home_screen_header.dart';
+
+import '../widgets/home_screen_section.dart';
+import '../models/section.dart';
+import '../providers/home_screen_provider.dart';
+import '../widgets/home_screen_header.dart';
 import '../widgets/home_screen_background.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -15,6 +17,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
+  HomeScreenProvider homeScreenProvider = HomeScreenProvider();
+  List<Section>      sections           = [];
+  @override
+  void initState() {
+    homeScreenProvider.getSections().forEach((Section section){
+      sections.add(section);
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
           const HomeScreenBackground(),
           HomeScreenHeader(
             child: Container(
-              width: 315.0,
+              width: 325.0,
               height: 350.0,
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
@@ -51,7 +62,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
                 ],
               ),
             ),
-          )
+          ),
+          HomeScreenSection(sections: sections,)
         ],
       )
     );

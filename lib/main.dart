@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'routes.dart';
+import 'route_generator.dart';
 
 void main() {
   runApp(const MyApp());
@@ -114,7 +114,7 @@ class MyApp extends StatelessWidget {
       ),
       themeMode: ThemeMode.light,
       initialRoute: '/SplashScreen',
-      routes: getRoutes(context),
+      onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
 }

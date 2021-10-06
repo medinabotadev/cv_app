@@ -100,14 +100,19 @@ class _HomeScreenSectionState extends State<HomeScreenSection> with SingleTicker
           var index      = sections.indexOf(section);
           var widgetList = <Widget>[];
           widgetList.add(
-            AnimatedBuilder(
-              animation: animationController,
-              builder: (BuildContext context, child){
-                return Transform.translate(
-                  offset: Offset(0, moveSectionUpList[index % 5].value),
-                  child: Opacity(opacity: fadeSectionInList[index % 5].value, child: Text(section.name, style: Theme.of(context).textTheme.headline4,))
-                );
+            GestureDetector(
+              onTap: (){
+                Navigator.of(context).pushNamed('/SectionScreen', arguments: section);
               },
+              child: AnimatedBuilder(
+                animation: animationController,
+                builder: (BuildContext context, child){
+                  return Transform.translate(
+                    offset: Offset(0, moveSectionUpList[index % 5].value),
+                    child: Opacity(opacity: fadeSectionInList[index % 5].value, child: Text(section.name, style: Theme.of(context).textTheme.headline4,))
+                  );
+                },
+              ),
             )
           );
           widgetList.add(

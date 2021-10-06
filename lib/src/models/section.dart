@@ -1,12 +1,12 @@
 // ignore_for_file: non_constant_identifier_names
 
 class Section{
-  String name   = '';
-  String route  = '';
+  String name;
+  String argument;
 
   Section({
     required this.name,
-    required this.route
+    required this.argument
   });
 }
 
@@ -15,11 +15,11 @@ class SectionList{
 
   SectionList(){
     _sectionList = [
-      Section(name: 'About Me',        route: '/AboutMe'),
-      Section(name: 'Work Experience', route: '/WorkExperience'),
-      Section(name: 'Projects',        route: '/Projects'),
-      Section(name: 'Education',       route: '/Education'),
-      Section(name: 'Contact',         route: '/Contact'),
+      Section(name: 'About Me',        argument: '/AboutMe'),
+      Section(name: 'Work Experience', argument: '/WorkExperience'),
+      Section(name: 'Projects',        argument: '/Projects'),
+      Section(name: 'Education',       argument: '/Education'),
+      Section(name: 'Contact',         argument: '/Contact'),
     ];
   }
 

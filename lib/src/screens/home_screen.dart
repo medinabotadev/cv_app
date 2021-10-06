@@ -63,7 +63,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
               ),
             ),
           ),
-          HomeScreenSection(sections: sections,)
+          HomeScreenSection(
+            sections: sections,
+            // onTap: 
+          )
         ],
       )
     );

@@ -12,7 +12,7 @@ class HomeScreenSection extends StatefulWidget {
   _HomeScreenSectionState createState() => _HomeScreenSectionState();
 }
 
-class _HomeScreenSectionState extends State<HomeScreenSection> with SingleTickerProviderStateMixin{
+class _HomeScreenSectionState extends State<HomeScreenSection> with TickerProviderStateMixin{
   late AnimationController animationController;
   late Animation<double>   moveSectionUpFirst;
   late Animation<double>   moveSectionUpSecond;
@@ -26,6 +26,9 @@ class _HomeScreenSectionState extends State<HomeScreenSection> with SingleTicker
   late Animation<double>   fadeSectionInFourth;
   late Animation<double>   fadeSectionInFifth;
   late List<Animation>     fadeSectionInList;
+
+  late AnimationController onTapAnimationController;
+  late Animation<double>   onTapFadeOut;
   @override
   void initState() {
     animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 3000));
@@ -73,6 +76,9 @@ class _HomeScreenSectionState extends State<HomeScreenSection> with SingleTicker
       fadeSectionInFourth,
       fadeSectionInFifth,
     ];
+
+    onTapAnimationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 3000));
+    onTapFadeOut   = Tween(begin: 1.0, end: 0.0).animate(onTapAnimationController);
     super.initState();
     
   }
@@ -80,7 +86,14 @@ class _HomeScreenSectionState extends State<HomeScreenSection> with SingleTicker
   @override
   void dispose() {
     animationController.dispose();
+    onTapAnimationController.dispose();
     super.dispose();
+  }
+
+  int _selectedIndex = 0;
+
+  _onSelected(int index){
+    setState(() => _selectedIndex = index);
   }
   @override
   Widget build(BuildContext context) {
@@ -91,39 +104,68 @@ class _HomeScreenSectionState extends State<HomeScreenSection> with SingleTicker
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: _generateChildrens(widget.sections, context, animationController, moveSectionUpList, fadeSectionInList)
+        children: _generateChildrens(widget.sections, _selectedIndex, context, animationController, moveSectionUpList, fadeSectionInList)
       )
     );
   }
-    List<Widget> _generateChildrens(List<Section> sections, BuildContext context, AnimationController animationController, List<Animation> moveSectionUpList, List<Animation> fadeSectionInList) {
+
+
+
+
+    List<Widget> _generateChildrens(List<Section> sections, int _selectedIndex, BuildContext context, AnimationController animationController, List<Animation> moveSectionUpList, List<Animation> fadeSectionInList) {
       var list = sections.map<List<Widget>>((section) {
           var index      = sections.indexOf(section);
           var widgetList = <Widget>[];
           widgetList.add(
             GestureDetector(
               onTap: (){
-                Navigator.of(context).pushNamed('/SectionScreen', arguments: section);
+                _onSelected(index);
+                onTapAnimationController.forward();
+                onTapAnimationController.addListener(() {
+                if(onTapAnimationController.status == AnimationStatus.completed){
+                      onTapAnimationController.reset();
+                      // Navigator.of(context).pushNamed('/SectionScreen', arguments: section);
+                      animationController.reset();
+                    }
+                  }
+                );
               },
               child: AnimatedBuilder(
-                animation: animationController,
-                builder: (BuildContext context, child){
-                  return Transform.translate(
-                    offset: Offset(0, moveSectionUpList[index % 5].value),
-                    child: Opacity(opacity: fadeSectionInList[index % 5].value, child: Text(section.name, style: Theme.of(context).textTheme.headline4,))
+                animation: onTapAnimationController,
+                builder: (BuildContext context, child) {
+                  return Opacity(
+                    opacity: _selectedIndex == index ? 1.0 : onTapFadeOut.value,
+                    child: AnimatedBuilder(
+                      animation: animationController,
+                      builder: (BuildContext context, child){
+                        return Transform.translate(
+                          offset: Offset(0, moveSectionUpList[index % 5].value),
+                          child: Opacity(opacity: fadeSectionInList[index % 5].value, child: Text(section.name, style: Theme.of(context).textTheme.headline4,))
+                        );
+                      },
+                    ),
                   );
-                },
+                }
               ),
             )
           );
           widgetList.add(
             AnimatedBuilder(
-              animation: animationController,
-              builder: (BuildContext context, child){
-                return Transform.translate(
-                  offset: Offset(0, moveSectionUpList[index % 6].value),
-                  child: Opacity(opacity: fadeSectionInList[index % 5].value, child: Container(width: 200.0, height: 2.0, color: Theme.of(context).hintColor))
+              animation: onTapAnimationController,
+              builder: (BuildContext context, child) {
+                return Opacity(
+                  opacity: _selectedIndex == index ? 1.0 : onTapFadeOut.value,
+                  child: AnimatedBuilder(
+                    animation: animationController,
+                    builder: (BuildContext context, child){
+                      return Transform.translate(
+                        offset: Offset(0, moveSectionUpList[index % 5].value),
+                        child: Opacity(opacity: fadeSectionInList[index % 5].value, child: Container(width: 200.0, height: 2.0, color: Theme.of(context).hintColor))
+                      );
+                    },
+                  ),
                 );
-              },
+              }
             )
           );
           widgetList.add(const SizedBox(height: 35.0,));

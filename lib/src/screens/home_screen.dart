@@ -2,6 +2,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
+import '../widgets/home_screen_header_elements.dart';
+import '../models/user.dart';
 
 import '../widgets/home_screen_section.dart';
 import '../models/section.dart';
@@ -19,11 +21,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
   HomeScreenProvider homeScreenProvider = HomeScreenProvider();
   List<Section>      sections           = [];
+  late User user;
   @override
   void initState() {
     homeScreenProvider.getSections().forEach((Section section){
       sections.add(section);
     });
+    user = homeScreenProvider.getMainUser();
     super.initState();
   }
   @override
@@ -48,8 +52,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
           const HomeScreenBackground(),
           HomeScreenHeader(
             child: Container(
+              // padding: const EdgeInsets.only(top: 70.0),
               width: 325.0,
-              height: 350.0,
+              height: 370.0,
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
                 borderRadius: const BorderRadius.only(bottomRight: Radius.circular(70)),
@@ -61,6 +66,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
                       offset: const Offset(0, 2)),
                 ],
               ),
+              child: HomeScreenHeaderElements(user: user),
             ),
           ),
           HomeScreenSection(

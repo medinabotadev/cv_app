@@ -99,7 +99,7 @@ class _HomeScreenSectionState extends State<HomeScreenSection> with TickerProvid
   Widget build(BuildContext context) {
     animationController.forward();
     return  Positioned(
-      top: 380.0,
+      top: 420.0,
       left: 20.0,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

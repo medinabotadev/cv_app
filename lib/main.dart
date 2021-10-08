@@ -53,12 +53,20 @@ class MyApp extends StatelessWidget {
           ),
           headline5: TextStyle(
             fontFamily: 'NunitoSans',
-            height: 1.0
+            height: 1.0,
+            letterSpacing: 2,
+            color: Color(0XFF1C1C1C)
           ),
           headline6: TextStyle(
             fontFamily: 'NunitoSans',
+            fontWeight: FontWeight.w900,
             height: 1.0
           ),
+          subtitle1: TextStyle(
+            fontFamily: 'NunitoSans',
+            height: 1.3,
+            color: Color(0xFF474747)
+          )
         )
       ),
       darkTheme: ThemeData(
@@ -100,19 +108,26 @@ class MyApp extends StatelessWidget {
             fontFamily: 'NunitoSans',
             color: Color(0xFFFFFFFF),
             fontWeight: FontWeight.w700,
-            height: 1.4
+            height: 1.4,
           ),
           headline5: TextStyle(
             fontFamily: 'NunitoSans',
-            height: 1.0
+            height: 1.0,
+            letterSpacing: 2,
+            color: Color(0XFF1C1C1C)
           ),
           headline6: TextStyle(
             fontFamily: 'NunitoSans',
             height: 1.0
           ),
+          subtitle1: TextStyle(
+            fontFamily: 'NunitoSans',
+            height: 1.3,
+            color: Color(0xFF474747)
+          )
         )
       ),
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.system,
       initialRoute: '/SplashScreen',
       onGenerateRoute: RouteGenerator.generateRoute,
     );

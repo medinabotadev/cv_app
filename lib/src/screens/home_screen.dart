@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
+import '../widgets/home_screen_end_drawer.dart';
 import '../widgets/home_screen_header_elements.dart';
 import '../models/user.dart';
 
@@ -38,14 +39,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 15.0),
-            child: IconButton(
-              icon: const Icon(Icons.menu), 
-              color: Theme.of(context).iconTheme.color,
-              iconSize: Theme.of(context).iconTheme.size!,
-              onPressed: (){}
-              ),
+            child: Builder(
+              builder: (context) => IconButton(
+                icon: const Icon(Icons.menu), 
+                color: Theme.of(context).iconTheme.color,
+                iconSize: Theme.of(context).iconTheme.size!,
+                onPressed: (){ Scaffold.of(context).openEndDrawer(); }
+                ),
+            ),
           )
         ]
+      ),
+      endDrawer: Drawer(
+        child: EndDrawer(),
       ),
       body: Stack(
         children: <Widget>[

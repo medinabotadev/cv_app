@@ -13,9 +13,33 @@ class HomeScreenHeaderElements extends StatefulWidget {
   State<HomeScreenHeaderElements> createState() => _HomeScreenHeaderElementsState();
 }
 
-class _HomeScreenHeaderElementsState extends State<HomeScreenHeaderElements> {
+class _HomeScreenHeaderElementsState extends State<HomeScreenHeaderElements> with SingleTickerProviderStateMixin{
+  late AnimationController animationController;
+  late Animation<double>   waveAnimation;
+  @override
+  void initState() {
+    animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 60000));
+    waveAnimation = Tween(begin: 0.0, end: 0.5).animate(
+      CurvedAnimation(parent: animationController, curve: Curves.easeOutQuad)
+    );
+    animationController.addListener(() {
+      if (animationController.status == AnimationStatus.completed) {
+        animationController.reverse();
+      } else if (animationController.status == AnimationStatus.dismissed){
+        animationController.forward();
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
+    animationController.forward();
     return SafeArea(
       top: false,
       left: false,
@@ -25,8 +49,13 @@ class _HomeScreenHeaderElementsState extends State<HomeScreenHeaderElements> {
         alignment: Alignment.center,
         fit: StackFit.expand,
         children: [
-          CustomPaint(
-            painter: _HeaderWaver(waveColor: Theme.of(context).scaffoldBackgroundColor),
+          AnimatedBuilder(
+            animation: animationController,
+            builder: (BuildContext context, child){
+              return CustomPaint(
+                painter: _HeaderWaver(waveColor: Theme.of(context).scaffoldBackgroundColor, animationController: animationController, waveAnimation: waveAnimation),
+              );
+            }
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -68,9 +97,13 @@ class _HomeScreenHeaderElementsState extends State<HomeScreenHeaderElements> {
 }
 
 class _HeaderWaver extends CustomPainter{
+  final AnimationController animationController;
   final Color waveColor;
+  final Animation waveAnimation;
   _HeaderWaver({
+    required this.animationController,
     required this.waveColor,
+    required this.waveAnimation,
   });
   @override
   void paint(Canvas canvas, Size size) {
@@ -80,9 +113,9 @@ class _HeaderWaver extends CustomPainter{
           brush.style       = PaintingStyle.fill;
 
     final path              = Path();
-          path.moveTo(0, size.height * 0.50);
-          path.quadraticBezierTo(size.width * 0.25, size.height * 0.50, size.width * 0.50, size.height * 0.30);
-          path.quadraticBezierTo(size.width * 0.75, size.height * 0.10, size.width, size.height * 0.10);
+          path.moveTo(0, size.height * waveAnimation.value);
+          path.quadraticBezierTo(size.width * 0.25, size.height * 0.5, size.width * 0.50, size.height * 0.30);
+          path.quadraticBezierTo(size.width * 0.75, size.height * 0.10, size.width, size.height * (0.6 - waveAnimation.value));
           path.lineTo(size.width, 0);
           path.lineTo(0, 0);
 

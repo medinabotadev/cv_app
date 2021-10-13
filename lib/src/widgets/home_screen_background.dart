@@ -62,6 +62,11 @@ class _HomeScreenBackgroundState extends State<HomeScreenBackground> with Single
     animationBackgroundController.forward();
     return Stack(
       children: [
+        Container(
+          width: double.infinity,
+          height: double.infinity,
+          color: Theme.of(context).scaffoldBackgroundColor,
+        ),
         AnimatedBuilder(
           animation: animationBackgroundController,
           builder: (BuildContext context, child){
@@ -74,14 +79,14 @@ class _HomeScreenBackgroundState extends State<HomeScreenBackground> with Single
             );
           }
         ),
-        BackdropFilter(
-          filter: ImageFilter.blur(
-            sigmaX: 12.5, sigmaY: 12.5
-          ),
-          child: Container(
-            height: double.infinity,
-          ),
-        ),
+        // BackdropFilter(
+        //   filter: ImageFilter.blur(
+        //     sigmaX: 12.5, sigmaY: 12.5
+        //   ),
+        //   child: Container(
+        //     height: double.infinity,
+        //   ),
+        // ),
       ],
     );
   }

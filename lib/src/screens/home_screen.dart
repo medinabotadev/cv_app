@@ -56,27 +56,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
                       isDrawerOpen = false;
                       _drawerController.close!();
                     }
-                    setState(() {
-                      
-                    });
+                    // TODO: Best management of app state
+                    setState(() {});
                   }
                 ),
             ),
           )
         ]
       ),
-      endDrawer: const Drawer(
-        child: EndDrawer(),
-      ),
       body: ZoomDrawer(
         controller: _drawerController,
+        disableGesture: true,
         menuScreen: EndDrawer(),
         mainScreen: Stack(
           children: <Widget>[
             const HomeScreenBackground(),
             HomeScreenHeader(
               child: Container(
-                // padding: const EdgeInsets.only(top: 70.0),
                 width: 325.0,
                 height: 370.0,
                 decoration: BoxDecoration(
@@ -95,9 +91,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
             ),
             HomeScreenSection(
               sections: sections,
-              // onTap: 
-            // onTap: 
-              // onTap: 
             )
           ],
         ),

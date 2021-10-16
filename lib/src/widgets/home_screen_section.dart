@@ -77,7 +77,7 @@ class _HomeScreenSectionState extends State<HomeScreenSection> with TickerProvid
       fadeSectionInFifth,
     ];
 
-    onTapAnimationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 3000));
+    onTapAnimationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
     onTapFadeOut   = Tween(begin: 1.0, end: 0.0).animate(onTapAnimationController);
     super.initState();
     
@@ -123,8 +123,8 @@ class _HomeScreenSectionState extends State<HomeScreenSection> with TickerProvid
                 onTapAnimationController.forward();
                 void onTap(){
                   if(onTapAnimationController.status == AnimationStatus.completed){
-                      onTapAnimationController.reset();
                       Navigator.of(context).pushNamed('/SectionScreen', arguments: section);
+                      onTapAnimationController.reset();
                       animationController.reset();
                       onTapAnimationController.removeListener(onTap);
                     }
@@ -141,7 +141,11 @@ class _HomeScreenSectionState extends State<HomeScreenSection> with TickerProvid
                       builder: (BuildContext context, child){
                         return Transform.translate(
                           offset: Offset(0, moveSectionUpList[index % 5].value),
-                          child: Opacity(opacity: fadeSectionInList[index % 5].value, child: Text(section.name, style: Theme.of(context).textTheme.headline4,))
+                          child: Opacity(opacity: fadeSectionInList[index % 5].value, child: Hero(
+                            tag: section.argument,
+                            child: Text(section.name, style: Theme.of(context).textTheme.headline4,)
+                            )
+                          )
                         );
                       },
                     ),
@@ -150,25 +154,25 @@ class _HomeScreenSectionState extends State<HomeScreenSection> with TickerProvid
               ),
             )
           );
-          widgetList.add(
-            AnimatedBuilder(
-              animation: onTapAnimationController,
-              builder: (BuildContext context, child) {
-                return Opacity(
-                  opacity: _selectedIndex == index ? 1.0 : onTapFadeOut.value,
-                  child: AnimatedBuilder(
-                    animation: animationController,
-                    builder: (BuildContext context, child){
-                      return Transform.translate(
-                        offset: Offset(0, moveSectionUpList[index % 5].value),
-                        child: Opacity(opacity: fadeSectionInList[index % 5].value, child: Container(width: 200.0, height: 2.0, color: Theme.of(context).hintColor))
-                      );
-                    },
-                  ),
-                );
-              }
-            )
-          );
+          // widgetList.add(
+          //   AnimatedBuilder(
+          //     animation: onTapAnimationController,
+          //     builder: (BuildContext context, child) {
+          //       return Opacity(
+          //         opacity: _selectedIndex == index ? 1.0 : onTapFadeOut.value,
+          //         child: AnimatedBuilder(
+          //           animation: animationController,
+          //           builder: (BuildContext context, child){
+          //             return Transform.translate(
+          //               offset: Offset(0, moveSectionUpList[index % 5].value),
+          //               child: Opacity(opacity: fadeSectionInList[index % 5].value, child: Container(width: 200.0, height: 2.0, color: Theme.of(context).hintColor))
+          //             );
+          //           },
+          //         ),
+          //       );
+          //     }
+          //   )
+          // );
           widgetList.add(const SizedBox(height: 35.0,));
           return widgetList;
         },

@@ -15,7 +15,7 @@ class RouteGenerator {
       case '/HomeScreen':
         return MaterialPageRoute(builder: (context) => const HomeScreen(),);
       case '/SectionScreen':
-        return PageRouteBuilder(pageBuilder: (context, _, __) => SectionScreen(section: args as Section ));
+        return PageRouteBuilder(pageBuilder: (context, _, __) => SectionScreen(section: args as Section ), transitionDuration: const Duration(milliseconds: 1000), reverseTransitionDuration: const Duration(milliseconds: 1000), barrierDismissible: true);
       default:
         return MaterialPageRoute(builder: (context) => const SplashScreen());
     }

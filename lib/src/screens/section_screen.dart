@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/section.dart';
+import 'about_me_screen.dart';
+import 'under_construction_screen.dart';
 
 class SectionScreen extends StatefulWidget {
   final Section section;
@@ -19,12 +21,20 @@ class _SectionScreenState extends State<SectionScreen> {
     section = widget.section;
     super.initState();
   }
+
+  Widget _section(String _sectionName){
+    switch (_sectionName) {
+      case '/AboutMe':
+        return AboutMe(heroTag: section.argument);
+      default:
+        return const UnderConstruction();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text(section.name),
-      ),
+      body: _section(section.argument)
     );
   }
 }

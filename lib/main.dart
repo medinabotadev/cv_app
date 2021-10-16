@@ -127,6 +127,8 @@ class MyApp extends StatelessWidget {
           )
         )
       ),
+      // themeMode: ThemeMode.light,
+      // themeMode: ThemeMode.dark,
       themeMode: ThemeMode.system,
       initialRoute: '/SplashScreen',
       onGenerateRoute: RouteGenerator.generateRoute,

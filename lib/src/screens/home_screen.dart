@@ -44,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
             padding: const EdgeInsets.only(right: 15.0),
             child: Builder(
               builder: (context) => IconButton(
-                icon: isDrawerOpen ? Icon(Icons.close) : Icon(Icons.menu), 
+                icon: isDrawerOpen ? const Icon(Icons.close) : const Icon(Icons.menu), 
                 color: Theme.of(context).iconTheme.color,
                 iconSize: Theme.of(context).iconTheme.size!,
                 onPressed: (){ 
@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
       body: ZoomDrawer(
         controller: _drawerController,
         disableGesture: true,
-        menuScreen: EndDrawer(),
+        menuScreen: const EndDrawer(),
         mainScreen: Stack(
           children: <Widget>[
             const HomeScreenBackground(),

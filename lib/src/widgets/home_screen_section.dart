@@ -121,14 +121,15 @@ class _HomeScreenSectionState extends State<HomeScreenSection> with TickerProvid
               onTap: (){
                 _onSelected(index);
                 onTapAnimationController.forward();
-                onTapAnimationController.addListener(() {
-                if(onTapAnimationController.status == AnimationStatus.completed){
+                void onTap(){
+                  if(onTapAnimationController.status == AnimationStatus.completed){
                       onTapAnimationController.reset();
-                      // Navigator.of(context).pushNamed('/SectionScreen', arguments: section);
+                      Navigator.of(context).pushNamed('/SectionScreen', arguments: section);
                       animationController.reset();
+                      onTapAnimationController.removeListener(onTap);
                     }
                   }
-                );
+                onTapAnimationController.addListener(onTap);
               },
               child: AnimatedBuilder(
                 animation: onTapAnimationController,

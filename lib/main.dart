@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'route_generator.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -66,6 +67,10 @@ class MyApp extends StatelessWidget {
             fontFamily: 'NunitoSans',
             height: 1.3,
             color: Color(0xFF474747)
+          ),
+          subtitle2: TextStyle(
+            fontFamily: 'NunitoSans',
+            height: 1.4,
           )
         )
       ),
@@ -124,6 +129,11 @@ class MyApp extends StatelessWidget {
             fontFamily: 'NunitoSans',
             height: 1.3,
             color: Color(0xFF474747)
+          ),
+          subtitle2: TextStyle(
+            fontFamily: 'NunitoSans',
+            height: 1.4,
+            fontSize: 16.0
           )
         )
       ),

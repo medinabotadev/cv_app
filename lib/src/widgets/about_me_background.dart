@@ -74,9 +74,9 @@ class _AboutMeBackgroundPainter extends CustomPainter{
           brush.style       = PaintingStyle.fill;
           brush.strokeWidth = 10.0;
     final path = Path();
-          path.moveTo(0, size.height * 0.85);
-          path.quadraticBezierTo(size.width * 0.25, size.height * (0.80 + waveAnimation.value), size.width * 0.50, size.height * 0.85);
-          path.quadraticBezierTo(size.width * 0.75, size.height * (0.90 - waveAnimation.value), size.width, size.height * 0.85);
+          path.moveTo(0, size.height * 0.90);
+          path.quadraticBezierTo(size.width * 0.25, size.height * (0.85 + waveAnimation.value), size.width * 0.50, size.height * 0.90);
+          path.quadraticBezierTo(size.width * 0.75, size.height * (0.95 - waveAnimation.value), size.width, size.height * 0.90);
           path.lineTo(size.width, size.height);
           path.lineTo(0, size.height);
 

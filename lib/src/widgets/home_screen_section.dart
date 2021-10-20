@@ -31,7 +31,7 @@ class _HomeScreenSectionState extends State<HomeScreenSection> with TickerProvid
   late Animation<double>   onTapFadeOut;
   @override
   void initState() {
-    animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 3000));
+    animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 2000));
     moveSectionUpFirst = Tween(begin: 150.0, end: 0.0).animate(
       CurvedAnimation(parent: animationController, curve: const Interval(0.0, 0.20, curve: Curves.easeInOutQuart))
     );

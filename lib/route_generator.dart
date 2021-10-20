@@ -15,7 +15,20 @@ class RouteGenerator {
       case '/HomeScreen':
         return MaterialPageRoute(builder: (context) => const HomeScreen(),);
       case '/SectionScreen':
-        return PageRouteBuilder(pageBuilder: (context, _, __) => SectionScreen(section: args as Section ), transitionDuration: const Duration(milliseconds: 1000), reverseTransitionDuration: const Duration(milliseconds: 1000), barrierDismissible: true);
+        return PageRouteBuilder(
+          barrierDismissible: true,
+          transitionDuration: const Duration(milliseconds: 1000), 
+          reverseTransitionDuration: const Duration(milliseconds: 1000), 
+          pageBuilder: (context, animation, secondAnimation) => SectionScreen(section: args as Section ),
+          transitionsBuilder: (context, animation, anotherAnimation, child) {
+            animation = CurvedAnimation(
+              curve: Curves.linear, parent: animation);
+                return FadeTransition(
+                  opacity:animation,
+                  child: child,
+            );
+          }
+        );
       default:
         return MaterialPageRoute(builder: (context) => const SplashScreen());
     }

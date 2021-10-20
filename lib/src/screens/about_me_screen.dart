@@ -1,10 +1,9 @@
 // TODO: Refactor, include user data into model
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:sensors_plus/sensors_plus.dart';
+
 import '../widgets/about_me_background.dart';
-import '../widgets/home_screen_background.dart';
 
 class AboutMe extends StatefulWidget {
   String heroTag;
@@ -14,8 +13,13 @@ class AboutMe extends StatefulWidget {
   State<AboutMe> createState() => _AboutMeState();
 }
 
-class _AboutMeState extends State<AboutMe> {
+class _AboutMeState extends State<AboutMe> with TickerProviderStateMixin{
   late StreamSubscription<AccelerometerEvent> _streamSubscription;
+  late AnimationController fadeInAnimationController;
+  late AnimationController fadeOutAnimationController;
+  late Animation<double> fadeIn;
+  late Animation<double> fadeInImage;
+  late Animation<double> fadeOut;
   double x = 0.0;
   double y = 0.0;
   @override
@@ -26,12 +30,23 @@ class _AboutMeState extends State<AboutMe> {
         y = event.y;
       });
     });
+
+    fadeInAnimationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 2000));
+    fadeIn = Tween(begin: 0.0, end: 1.0).animate(fadeInAnimationController);
+    fadeInImage = Tween(begin: 0.0, end: 0.4).animate(fadeInAnimationController);
+    fadeOutAnimationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
+    fadeOut = Tween(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: fadeOutAnimationController, curve: const Interval(0.0, 0.50))
+    );
+    fadeInAnimationController.forward();
     super.initState();
   }
 
   @override
   void dispose() {
     _streamSubscription.cancel();
+    fadeInAnimationController.dispose();
+    fadeOutAnimationController.dispose();
     super.dispose();
   }
 
@@ -44,48 +59,71 @@ class _AboutMeState extends State<AboutMe> {
           CustomScrollView(
             slivers: <Widget>[
               SliverAppBar(
-                expandedHeight: 300.0,
+                expandedHeight: MediaQuery.of(context).size.height * 0.55,
+                automaticallyImplyLeading: false,
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back_ios_new),
+                  color: Theme.of(context).iconTheme.color,
+                  onPressed: fadeIn.value < 1.0 ? null
+                  : (){
+                    fadeOutAnimationController.forward();
+                    void onPressed(){
+                      fadeOutAnimationController.addListener(() {
+                        if (fadeOutAnimationController.status == AnimationStatus.completed) {
+                          Navigator.of(context).pop();
+                          fadeInAnimationController.reset();
+                          fadeOutAnimationController.reset();
+                          fadeOutAnimationController.removeListener(onPressed);
+                        }
+                      });
+                    }
+                    fadeOutAnimationController.addListener(onPressed);
+                  },
+                ),
                 flexibleSpace: Stack(
                   fit: StackFit.expand,
                   children: [
                     AnimatedPositioned(
-                      duration: const Duration(milliseconds: 300),
+                      duration: const Duration(milliseconds: 500),
                       top: 0,
                       bottom: y * -5,
                       right: x * -5,
                       left: x * 5,
-                      child: ShaderMask(
-                        // TODO: Add transition in animation to avoid suddenly image appearance
-                        shaderCallback: (rect) {
-                          return LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            stops: const [0.0, 0.90],
-                            colors: [
-                              Theme.of(context)
-                                  .scaffoldBackgroundColor
-                                  .withOpacity(0.3),
-                              Colors.transparent
-                            ],
-                          ).createShader(
-                              Rect.fromLTRB(0, 0, rect.width, rect.height));
-                        },
-                        blendMode: BlendMode.dstIn,
-                        child: Image.asset(
-                          'assets/img/about_me.jpg',
-                          // height: 400.0,
-                          fit: BoxFit.cover,
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          colorBlendMode: BlendMode.color,
-                        ),
+                      child: AnimatedBuilder(
+                        animation: fadeInAnimationController,
+                        builder: (BuildContext context, child) {
+                          return ShaderMask(
+                            shaderCallback: (rect) {
+                              return LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                stops: const [0.0, 0.9],
+                                colors: [
+                                  Theme.of(context)
+                                      .scaffoldBackgroundColor
+                                      .withOpacity(fadeInImage.value),
+                                  Colors.transparent
+                                ],
+                              ).createShader(
+                                  Rect.fromLTRB(0, 0, rect.width, rect.height));
+                            },
+                            blendMode: BlendMode.dstIn,
+                            child: Image.asset(
+                              'assets/img/about_me.jpg',
+                              fit: BoxFit.cover,
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                              colorBlendMode: BlendMode.color,
+                            ),
+                          );
+                        }
                       ),
                     ),
                     AnimatedPositioned(
-                      duration: const Duration(milliseconds: 300),
-                      top: 100 + (y * 7),
-                      bottom: (y * -7),
-                      right: (x * -7),
-                      left: 40 + (x * 7),
+                      duration: const Duration(milliseconds: 500),
+                      top: 70 + (y * 7.2),
+                      bottom: (y * -7.2),
+                      right: (x * -7.2),
+                      left: 35 + (x * 7.2),
                       child: Hero(
                           tag: widget.heroTag,
                           child: Text(
@@ -99,24 +137,34 @@ class _AboutMeState extends State<AboutMe> {
             ],
           ),
           AnimatedPositioned(
-            duration: const Duration(milliseconds: 300),
-            top: 180 + (y * 6),
+            duration: const Duration(milliseconds: 500),
+            top: 150 + (y * 6),
             bottom: (y * -6),
             right: (x * -6),
-            left: 40 + (x * 6),
-            child: CustomScrollView(
-              slivers: [
-                SliverList(
-                  delegate: SliverChildListDelegate([
-                    // TODO: Fix text style
-                    Text('Duis eget justo mi. In et tincidunt nibh. Praesent et justo sed enim rutrum vulputate. Nunc quis ante commodo sapien congue suscipit. Vivamus nec condimentum sapien.'),
-                    SizedBox(height: 50.0,),
-                    Text('Duis eget justo mi. In et tincidunt nibh. Praesent et justo sed enim rutrum vulputate. Nunc quis ante commodo sapien congue suscipit. Vivamus nec condimentum sapien. Quisque sit amet sapien a orci suscipit semper ac eget orci. Nulla facilisi. Nunc et tortor mi. Praesent sodales aliquet lorem, at rutrum arcu vestibulum eget.'),
-                    SizedBox(height: 50.0,), 
-                    Text('Duis eget justo mi. In et tincidunt nibh. Praesent et justo sed enim rutrum vulputate. Nunc quis ante commodo sapien congue suscipit. Vivamus nec condimentum sapien. Quisque sit amet sapien a orci suscipit semper ac eget orci. Nulla facilisi. Nunc et tortor mi. Praesent sodales aliquet lorem, at rutrum arcu vestibulum eget.'),
-                  ]),
-                )
-              ],
+            left: 35 + (x * 6),
+            child: AnimatedBuilder(
+              animation: Listenable.merge([fadeInAnimationController, fadeOutAnimationController]),
+              builder: (BuildContext context, child) {
+                return Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: Opacity(
+                    opacity: fadeIn.value - fadeOut.value,
+                    child: CustomScrollView(
+                      slivers: [
+                        SliverList(
+                          delegate: SliverChildListDelegate([
+                            Text('Duis eget justo mi. In et tincidunt nibh. Praesent et justo sed enim rutrum vulputate. Nunc quis ante commodo sapien congue suscipit. Vivamus nec condimentum sapien.', style: Theme.of(context).textTheme.subtitle2,),
+                            const SizedBox(height: 20.0,),
+                            Text('Duis eget justo mi. In et tincidunt nibh. Praesent et justo sed enim rutrum vulputate. Nunc quis ante commodo sapien congue suscipit. Vivamus nec condimentum sapien. Quisque sit amet sapien a orci suscipit semper ac eget orci. Nulla facilisi. Nunc et tortor mi. Praesent sodales aliquet lorem.', style: Theme.of(context).textTheme.subtitle2,),
+                            const SizedBox(height: 20.0,), 
+                            Text('Duis eget justo mi. In et tincidunt nibh. Praesent et justo sed enim rutrum vulputate. Nunc quis ante commodo sapien congue suscipit. Vivamus nec condimentum sapien. Quisque sit amet sapien a orci suscipit semper ac eget orci. Nulla facilisi. Nunc et tortor mi. Praesent sodales aliquet lorem.', style: Theme.of(context).textTheme.subtitle2,),
+                          ]),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              }
             ),
           )
         ],
@@ -124,28 +172,3 @@ class _AboutMeState extends State<AboutMe> {
     );
   }
 }
-
-// CustomScrollView(
-          //   slivers: <Widget>[
-          //     const SliverAppBar(
-          //       expandedHeight: 200.0,
-          //       flexibleSpace: Center(child: Text('About me')),
-          //     ),
-              // SliverList(
-              //   delegate: SliverChildListDelegate(
-              //     [
-              //       Container(color: Colors.red, height: 150.0),
-              //       Container(color: Colors.purple, height: 150.0),
-              //       Container(color: Colors.green, height: 150.0),
-              //       Container(color: Colors.red, height: 150.0),
-              //       Container(color: Colors.purple, height: 150.0),
-              //       Container(color: Colors.green, height: 150.0),
-              //       Container(color: Colors.red, height: 150.0),
-              //       Container(color: Colors.purple, height: 150.0),
-              //       Container(color: Colors.green, height: 150.0),
-              //       Container(color: Colors.red, height: 150.0),
-              //       Container(color: Colors.purple, height: 150.0),
-              //       Container(color: Colors.green, height: 150.0),
-              //     ],
-              //   )
-              // )

@@ -71,6 +71,7 @@ class MyApp extends StatelessWidget {
           subtitle2: TextStyle(
             fontFamily: 'NunitoSans',
             height: 1.4,
+            fontSize: 16.0
           )
         )
       ),

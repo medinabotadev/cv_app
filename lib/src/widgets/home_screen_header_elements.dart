@@ -86,7 +86,7 @@ class _HomeScreenHeaderElementsState extends State<HomeScreenHeaderElements> wit
                   ),
                 ),
                 Text(widget.user.occupation!, textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline5,),
-                Padding(padding: const EdgeInsets.symmetric(horizontal: 5.0), child: Text(widget.user.bio!, textAlign: TextAlign.center, style: Theme.of(context).textTheme.subtitle1)),
+                Padding(padding: const EdgeInsets.symmetric(horizontal: 5.0), child: Text(widget.user.description!, textAlign: TextAlign.center, style: Theme.of(context).textTheme.subtitle1)),
                 const Flexible(child: SizedBox())
             ]
           ),

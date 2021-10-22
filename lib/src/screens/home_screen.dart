@@ -56,7 +56,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
                       isDrawerOpen = false;
                       _drawerController.close!();
                     }
-                    // TODO: Best management of app state
                     setState(() {});
                   }
                 ),

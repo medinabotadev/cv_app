@@ -1,29 +1,33 @@
-// TODO: Refactor, include user data into model
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:sensors_plus/sensors_plus.dart';
 
+import 'package:sensors_plus/sensors_plus.dart';
+import '../models/user.dart';
 import '../widgets/about_me_background.dart';
+import '../providers/home_screen_provider.dart';
 
 class AboutMe extends StatefulWidget {
-  String heroTag;
-  AboutMe({Key? key, required this.heroTag}) : super(key: key);
+  final String heroTag;
+  const AboutMe({Key? key, required this.heroTag}) : super(key: key);
 
   @override
   State<AboutMe> createState() => _AboutMeState();
 }
 
 class _AboutMeState extends State<AboutMe> with TickerProviderStateMixin{
+  HomeScreenProvider homeScreenProvider = HomeScreenProvider();
   late StreamSubscription<AccelerometerEvent> _streamSubscription;
   late AnimationController fadeInAnimationController;
   late AnimationController fadeOutAnimationController;
   late Animation<double> fadeIn;
   late Animation<double> fadeInImage;
   late Animation<double> fadeOut;
+  late User user;
   double x = 0.0;
   double y = 0.0;
   @override
   void initState() {
+    user = homeScreenProvider.getMainUser();
     _streamSubscription = accelerometerEvents.listen((event) {
       setState(() {
         x = event.x;
@@ -153,11 +157,11 @@ class _AboutMeState extends State<AboutMe> with TickerProviderStateMixin{
                       slivers: [
                         SliverList(
                           delegate: SliverChildListDelegate([
-                            Text('Duis eget justo mi. In et tincidunt nibh. Praesent et justo sed enim rutrum vulputate. Nunc quis ante commodo sapien congue suscipit. Vivamus nec condimentum sapien.', style: Theme.of(context).textTheme.subtitle2,),
+                            Text(user.bioSection1!, style: Theme.of(context).textTheme.subtitle2,),
                             const SizedBox(height: 20.0,),
-                            Text('Duis eget justo mi. In et tincidunt nibh. Praesent et justo sed enim rutrum vulputate. Nunc quis ante commodo sapien congue suscipit. Vivamus nec condimentum sapien. Quisque sit amet sapien a orci suscipit semper ac eget orci. Nulla facilisi. Nunc et tortor mi. Praesent sodales aliquet lorem.', style: Theme.of(context).textTheme.subtitle2,),
+                            Text(user.bioSection2!, style: Theme.of(context).textTheme.subtitle2,),
                             const SizedBox(height: 20.0,), 
-                            Text('Duis eget justo mi. In et tincidunt nibh. Praesent et justo sed enim rutrum vulputate. Nunc quis ante commodo sapien congue suscipit. Vivamus nec condimentum sapien. Quisque sit amet sapien a orci suscipit semper ac eget orci. Nulla facilisi. Nunc et tortor mi. Praesent sodales aliquet lorem.', style: Theme.of(context).textTheme.subtitle2,),
+                            Text(user.bioSection3!, style: Theme.of(context).textTheme.subtitle2,),
                           ]),
                         )
                       ],

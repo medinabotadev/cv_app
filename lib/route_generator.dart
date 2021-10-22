@@ -17,8 +17,8 @@ class RouteGenerator {
       case '/SectionScreen':
         return PageRouteBuilder(
           barrierDismissible: true,
-          transitionDuration: const Duration(milliseconds: 1000), 
-          reverseTransitionDuration: const Duration(milliseconds: 1000), 
+          transitionDuration: const Duration(milliseconds: 500), 
+          reverseTransitionDuration: const Duration(milliseconds: 500), 
           pageBuilder: (context, animation, secondAnimation) => SectionScreen(section: args as Section ),
           transitionsBuilder: (context, animation, anotherAnimation, child) {
             animation = CurvedAnimation(

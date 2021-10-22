@@ -77,7 +77,7 @@ class _HomeScreenSectionState extends State<HomeScreenSection> with TickerProvid
       fadeSectionInFifth,
     ];
 
-    onTapAnimationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
+    onTapAnimationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
     onTapFadeOut   = Tween(begin: 1.0, end: 0.0).animate(onTapAnimationController);
     super.initState();
     

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_cv_app/src/widgets/about_me_background.dart';
+import '../widgets/about_me_background.dart';
 
 class WorkExperienceScreen extends StatefulWidget {
   final String heroTag;

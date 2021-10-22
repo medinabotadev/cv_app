@@ -103,7 +103,7 @@ class _AboutMeState extends State<AboutMe> with TickerProviderStateMixin {
                         return LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
-                          stops: const [0.0, 0.8],
+                          stops: const [0.0, 0.9],
                           colors: [
                             Theme.of(context).scaffoldBackgroundColor.withOpacity(fadeInImage.value),
                             Colors.transparent

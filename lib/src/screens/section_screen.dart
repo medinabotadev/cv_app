@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'work_experience.dart';
 import '../models/section.dart';
 import 'about_me_screen.dart';
+import 'work_experience_screen.dart';
 import 'under_construction_screen.dart';
 
 class SectionScreen extends StatefulWidget {

@@ -1,15 +1,14 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
-import '../widgets/home_screen_end_drawer.dart';
-import '../widgets/home_screen_header_elements.dart';
+import 'dart:ui';
 import '../models/user.dart';
-
-import '../widgets/home_screen_section.dart';
 import '../models/section.dart';
 import '../providers/home_screen_provider.dart';
+import '../widgets/home_screen_end_drawer.dart';
+import '../widgets/home_screen_header_elements.dart';
+import '../widgets/home_screen_section.dart';
 import '../widgets/home_screen_header.dart';
 import '../widgets/home_screen_background.dart';
 

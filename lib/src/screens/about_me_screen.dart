@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-
 import 'package:sensors_plus/sensors_plus.dart';
+import 'dart:async';
 import '../models/user.dart';
-import '../widgets/about_me_background.dart';
 import '../providers/home_screen_provider.dart';
+import '../widgets/about_me_background.dart';
+import '../widgets/sections_image_background.dart';
 
 class AboutMe extends StatefulWidget {
   final String heroTag;
@@ -35,13 +35,10 @@ class _AboutMeState extends State<AboutMe> with TickerProviderStateMixin {
       });
     });
 
-    fadeInAnimationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 2000));
+    fadeInAnimationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 4000));
     fadeIn = Tween(begin: 0.0, end: 1.0).animate(fadeInAnimationController);
-    fadeInImage =
-        Tween(begin: 0.0, end: 0.4).animate(fadeInAnimationController);
-    fadeOutAnimationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 1000));
+    fadeInImage = Tween(begin: 0.0, end: 0.4).animate(fadeInAnimationController);
+    fadeOutAnimationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
     fadeOut = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
         parent: fadeOutAnimationController, curve: const Interval(0.0, 0.50)));
     fadeInAnimationController.forward();
@@ -87,44 +84,7 @@ class _AboutMeState extends State<AboutMe> with TickerProviderStateMixin {
       body: Stack(
         children: <Widget>[
           const SectionsBackground(),
-          AnimatedPositioned(
-            duration: const Duration(milliseconds: 500),
-            top: 0,
-            bottom: y * -5.0,
-            right: x * -5.0,
-            left: x * 5.0,
-            child: Column(
-              children: [
-                AnimatedBuilder(
-                  animation: fadeInAnimationController,
-                  builder: (BuildContext context, child) {
-                    return ShaderMask(
-                      shaderCallback: (rect) {
-                        return LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          stops: const [0.0, 0.9],
-                          colors: [
-                            Theme.of(context).scaffoldBackgroundColor.withOpacity(fadeInImage.value),
-                            Colors.transparent
-                          ],
-                        ).createShader(Rect.fromLTRB(0, 0, rect.width, rect.height));
-                      },
-                      blendMode: BlendMode.dstIn,
-                      child: Image.asset(
-                        'assets/img/about_me.jpg',
-                        fit: BoxFit.cover,
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        colorBlendMode: BlendMode.color,
-                        height: MediaQuery.of(context).size.height * 0.55,
-                        width: double.infinity,
-                      ),
-                    );
-                  }
-                ),
-              ],
-            ),
-          ),
+          SectionImageBackground(y: y, x: x, fadeInAnimationController: fadeInAnimationController, fadeInImage: fadeInImage, imageRoute: 'assets/img/about_me.jpg',),
           AnimatedPositioned(
             duration: const Duration(milliseconds: 500),
             top: 70 + (y * 9),

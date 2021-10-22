@@ -59,7 +59,7 @@ class _AboutMeState extends State<AboutMe> with TickerProviderStateMixin{
     return Scaffold(
       body: Stack(
         children: [
-          const AboutMeBackground(),
+          const SectionsBackground(),
           CustomScrollView(
             slivers: <Widget>[
               SliverAppBar(

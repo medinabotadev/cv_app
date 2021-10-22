@@ -2,14 +2,14 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-class AboutMeBackground extends StatefulWidget {
-  const AboutMeBackground({ Key? key }) : super(key: key);
+class SectionsBackground extends StatefulWidget {
+  const SectionsBackground({ Key? key }) : super(key: key);
 
   @override
-  _AboutMeBackgroundState createState() => _AboutMeBackgroundState();
+  _SectionsBackgroundState createState() => _SectionsBackgroundState();
 }
 
-class _AboutMeBackgroundState extends State<AboutMeBackground> with SingleTickerProviderStateMixin{
+class _SectionsBackgroundState extends State<SectionsBackground> with SingleTickerProviderStateMixin{
   late AnimationController animationWaveController;
   late Animation<double>   waveAnimation;
   @override

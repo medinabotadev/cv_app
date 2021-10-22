@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'work_experience.dart';
 import '../models/section.dart';
 import 'about_me_screen.dart';
 import 'under_construction_screen.dart';
@@ -26,6 +27,8 @@ class _SectionScreenState extends State<SectionScreen> {
     switch (_sectionName) {
       case '/AboutMe':
         return AboutMe(heroTag: section.argument);
+      case '/WorkExperience':
+        return WorkExperienceScreen(heroTag: section.argument);
       default:
         return const UnderConstruction();
     }

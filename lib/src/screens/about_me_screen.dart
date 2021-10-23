@@ -39,8 +39,7 @@ class _AboutMeState extends State<AboutMe> with TickerProviderStateMixin {
     fadeIn = Tween(begin: 0.0, end: 1.0).animate(fadeInAnimationController);
     fadeInImage = Tween(begin: 0.0, end: 0.4).animate(fadeInAnimationController);
     fadeOutAnimationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
-    fadeOut = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-        parent: fadeOutAnimationController, curve: const Interval(0.0, 0.50)));
+    fadeOut = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: fadeOutAnimationController, curve: const Interval(0.0, 0.50)));
     fadeInAnimationController.forward();
     super.initState();
   }

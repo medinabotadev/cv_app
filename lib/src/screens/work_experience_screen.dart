@@ -101,38 +101,81 @@ class _WorkExperienceScreenState extends State<WorkExperienceScreen> with Ticker
             top: 155 + (y * 6),
             bottom: (y * -6),
             right: (x * -6),
-            left: 35 + (x * 6),
+            left: 00 + (x * 6),
             child: AnimatedBuilder(
                 animation: Listenable.merge([fadeInAnimationController, fadeOutAnimationController]),
                 builder: (BuildContext context, child) {
                   return Padding(
-                  padding: const EdgeInsets.only(right: 10.0),
+                  padding: const EdgeInsets.only(right: 10.0, left: 10.0),
                   child: Opacity(
                     opacity: fadeIn.value - fadeOut.value,
-                    child: Container(
-                      child: Timeline.tileBuilder(
-                        // TODO: Add personalization to timeline
-                        builder: TimelineTileBuilder.fromStyle(
-                          itemCount: workExperience.length,
-                          oppositeContentsBuilder: (BuildContext context, int index){
-                            return Container(
-                              height: 100.0,
-                              child: Center(child: Text(workExperience[0].period)),
-                            );
-                          },
-                          contentsBuilder: (BuildContext context, int index){
-                            return Container(
-                              height: 100.0,
-                              child: Text(workExperience[0].period),
-                            );
-                          },
+                    child: Timeline.tileBuilder(
+                      theme: TimelineThemeData(
+                        indicatorTheme: IndicatorThemeData(
+                          color: Theme.of(context).colorScheme.brightness != Brightness.light ? Theme.of(context).primaryColor : Theme.of(context).hintColor,
+                          size: 20.0
+                        ),
+                        connectorTheme: ConnectorThemeData(
+                          color: Theme.of(context).hintColor
                         )
                       ),
+                      builder: TimelineTileBuilder.fromStyle(
+                        itemExtent: 150.0,
+                        endConnectorStyle: ConnectorStyle.solidLine,
+                        contentsAlign: ContentsAlign.alternating,
+                        connectorStyle: ConnectorStyle.solidLine,
+                        indicatorStyle: IndicatorStyle.outlined,
+                        itemCount: workExperience.length,
+                        oppositeContentsBuilder: (BuildContext context, int index){
+                          return SizedBox(
+                            height: 100.0,
+                            // color: Colors.red,
+                            child: Center(child: Text(workExperience[index].period, style: Theme.of(context).textTheme.subtitle1,)),
+                          );
+                        },
+                        contentsBuilder: (BuildContext context, int index){
+                          return SizedBox(
+                            height: 100.0,
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(workExperience[index].companyName, style: Theme.of(context).textTheme.subtitle2, overflow: TextOverflow.ellipsis, maxLines: 1,),
+                                  // const SizedBox(height: 10.0,),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(Icons.location_pin, size: 14.0,),
+                                      const SizedBox(width: 5.0,),
+                                      Text(workExperience[index].location, style: Theme.of(context).textTheme.subtitle1!.merge(const TextStyle(fontSize: 13.0)), overflow: TextOverflow.ellipsis, maxLines: 1,),
+                                    ],
+                                  ),
+                                  Text(workExperience[index].description, style: Theme.of(context).textTheme.subtitle1, overflow: TextOverflow.ellipsis, maxLines: 1,),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      )
                     )
                   ),
                 );
               }
             ),
+          ),
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 500),
+            top: 380 + (y * 3),
+            bottom: (y * -3),
+            right: (x * -3),
+            left: 20 + (x * 3),
+            child: Row(
+              children: <Widget>[
+                const Icon(Icons.info_outline_rounded, size: 14.0,),
+                const SizedBox(width: 5.0,),
+                Text('Tap on company name to see job descriptions', style: Theme.of(context).textTheme.subtitle1!.merge(const TextStyle(fontSize: 13.0)))
+              ],
+            )
           )
         ],
       ),

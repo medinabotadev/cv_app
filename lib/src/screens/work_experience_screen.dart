@@ -4,7 +4,7 @@ import 'package:timelines/timelines.dart';
 import 'dart:async';
 import '../models/work_experience.dart';
 import '../providers/work_experience_provider.dart';
-import '../widgets/about_me_background.dart';
+import '../widgets/section_background.dart';
 import '../widgets/sections_image_background.dart';
 
 class WorkExperienceScreen extends StatefulWidget {

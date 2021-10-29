@@ -1,57 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'dart:async';
-import '../models/user.dart';
-import '../providers/home_screen_provider.dart';
+import '../models/project.dart';
+import '../providers/projects_provider.dart';
 import '../widgets/section_background.dart';
 import '../widgets/sections_image_background.dart';
+import '../widgets/project_slide_item.dart';
 
-class AboutMe extends StatefulWidget {
+class ProjectsScreen extends StatefulWidget {
   final String heroTag;
-  const AboutMe({Key? key, required this.heroTag}) : super(key: key);
+  const ProjectsScreen({ Key? key, required this.heroTag }) : super(key: key);
 
   @override
-  State<AboutMe> createState() => _AboutMeState();
+  _ProjectsScreenState createState() => _ProjectsScreenState();
 }
 
-class _AboutMeState extends State<AboutMe> with TickerProviderStateMixin {
-  HomeScreenProvider homeScreenProvider = HomeScreenProvider();
+class _ProjectsScreenState extends State<ProjectsScreen> with TickerProviderStateMixin{
+  ProjectsProvider projectsProvider = ProjectsProvider();
   late StreamSubscription<AccelerometerEvent> _streamSubscription;
   late AnimationController fadeInAnimationController;
+  late AnimationController colorWaveController;
   late AnimationController fadeOutAnimationController;
-  late Animation<double> fadeIn;
   late Animation<double> fadeInImage;
+  late Animation<double> fadeIn;
   late Animation<double> fadeOut;
-  late User user;
+  late List<Project> projectList;
+  // Color? waveColor;
+  late Color? nextColor;
+  late Color? previousColor;
+  late Animation colorTween;
   double x = 0.0;
   double y = 0.0;
   @override
   void initState() {
-    user = homeScreenProvider.getMainUser();
+    projectList = projectsProvider.getProjects();
+    // waveColor = projectList[0].themeColor;
+    nextColor = projectList[0].themeColor;
+    previousColor = projectList[0].themeColor;
     _streamSubscription = accelerometerEvents.listen((event) {
       setState(() {
         x = event.x;
         y = event.y;
       });
     });
-
     fadeInAnimationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 4000));
-    fadeIn = Tween(begin: 0.0, end: 1.0).animate(fadeInAnimationController);
+    colorWaveController     = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
+    colorTween = ColorTween(begin: previousColor, end: nextColor).animate(colorWaveController);
     fadeInImage = Tween(begin: 0.0, end: 0.4).animate(fadeInAnimationController);
     fadeOutAnimationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
     fadeOut = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: fadeOutAnimationController, curve: const Interval(0.0, 0.50)));
+    fadeIn = Tween(begin: 0.0, end: 1.0).animate(fadeInAnimationController);
     fadeInAnimationController.forward();
     super.initState();
+    
   }
-
   @override
   void dispose() {
     _streamSubscription.cancel();
     fadeInAnimationController.dispose();
-    fadeOutAnimationController.dispose();
+    colorWaveController.dispose();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,6 +82,7 @@ class _AboutMeState extends State<AboutMe> with TickerProviderStateMixin {
                       fadeInAnimationController.reset();
                       fadeOutAnimationController.reset();
                       fadeOutAnimationController.removeListener(onPressed);
+                      fadeOutAnimationController.dispose();
                     }
                   }
                 );
@@ -82,8 +93,13 @@ class _AboutMeState extends State<AboutMe> with TickerProviderStateMixin {
       ),
       body: Stack(
         children: <Widget>[
-          const SectionsBackground(),
-          SectionImageBackground(y: y, x: x, fadeInAnimationController: fadeInAnimationController, fadeInImage: fadeInImage, imageRoute: 'assets/img/about_me.jpg',),
+          AnimatedBuilder(
+            animation: colorTween,
+            builder: (BuildContext context, child) {
+              return SectionsBackground(waveColor: colorTween.value,);
+            }
+          ),
+          SectionImageBackground(y: y, x: x, fadeInAnimationController: fadeInAnimationController, fadeInImage: fadeInImage, imageRoute: 'assets/img/projects.jpg',),
           AnimatedPositioned(
             duration: const Duration(milliseconds: 500),
             top: 70 + (y * 9),
@@ -93,37 +109,38 @@ class _AboutMeState extends State<AboutMe> with TickerProviderStateMixin {
             child: Hero(
               tag: widget.heroTag,
               child: Text(
-                'About Me',
+                'Projects',
                 style: Theme.of(context).textTheme.headline4,
               )
             ),
           ),
           AnimatedPositioned(
             duration: const Duration(milliseconds: 500),
-            top: 155 + (y * 6),
+            top: -40 + (y * 6),
             bottom: (y * -6),
-            right: (x * -6),
-            left: 35 + (x * 6),
-            child: AnimatedBuilder(
-                animation: Listenable.merge([fadeInAnimationController, fadeOutAnimationController]),
-                builder: (BuildContext context, child) {
-                  return Padding(
-                  padding: const EdgeInsets.only(right: 10.0),
-                  child: Opacity(
-                    opacity: fadeIn.value - fadeOut.value,
-                    child: Column(
-                      children: <Widget>[
-                        Text(user.bioSection1!,style: Theme.of(context).textTheme.subtitle2,),
-                        const SizedBox(height: 20.0,),
-                        Text(user.bioSection2!,style: Theme.of(context).textTheme.subtitle2,),
-                        const SizedBox(height: 20.0,),
-                        Text(user.bioSection3!,style: Theme.of(context).textTheme.subtitle2,),
-                      ]
-                    ),
-                  ),
-                );
-              }
-            ),
+            right: 0,//(x * -9),
+            left: 0,//35 + (x * 9),
+            child: CarouselSlider.builder(
+              itemCount: projectList.length, 
+              options: CarouselOptions(
+                aspectRatio: 0.80,
+                viewportFraction:  0.70,
+                enlargeCenterPage: true,
+                autoPlay: true,
+                autoPlayAnimationDuration: const Duration(milliseconds: 1000),
+                enlargeStrategy: CenterPageEnlargeStrategy.scale,
+                onPageChanged: (int index, carouselPageChangedReason){
+                  previousColor = nextColor;
+                  nextColor = projectList[index].themeColor;
+                  colorTween = ColorTween(begin: previousColor, end: nextColor).animate(colorWaveController);
+                  colorWaveController.reset();
+                  colorWaveController.forward(from: 0.0);
+                }
+              ),
+              itemBuilder: (BuildContext context, int index, int secondIndex){
+                return CarouselSliderItem(project: projectList[index]);
+              },
+            ) 
           )
         ],
       ),

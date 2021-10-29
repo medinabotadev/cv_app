@@ -3,13 +3,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class SectionsBackground extends StatefulWidget {
-  const SectionsBackground({ Key? key }) : super(key: key);
+  final Color? waveColor;
+  const SectionsBackground({ Key? key, this.waveColor }) : super(key: key);
 
   @override
   _SectionsBackgroundState createState() => _SectionsBackgroundState();
 }
 
-class _SectionsBackgroundState extends State<SectionsBackground> with SingleTickerProviderStateMixin{
+class _SectionsBackgroundState extends State<SectionsBackground> with TickerProviderStateMixin{
   late AnimationController animationWaveController;
   late Animation<double>   waveAnimation;
   @override
@@ -23,11 +24,9 @@ class _SectionsBackgroundState extends State<SectionsBackground> with SingleTick
         animationWaveController.forward();
       }
     });
-
-    
+    animationWaveController.forward();
     super.initState();
   }
-
   @override
   void dispose() {
     animationWaveController.dispose();
@@ -35,7 +34,6 @@ class _SectionsBackgroundState extends State<SectionsBackground> with SingleTick
   }
   @override
   Widget build(BuildContext context) {
-    animationWaveController.forward();
     return Stack(
       children: [
         AnimatedBuilder(
@@ -43,7 +41,7 @@ class _SectionsBackgroundState extends State<SectionsBackground> with SingleTick
           builder: (BuildContext context, child){
             return CustomPaint(
               size: MediaQuery.of(context).size,
-              painter: _AboutMeBackgroundPainter(primaryColor: Theme.of(context).primaryColor, waveAnimation: waveAnimation)
+              painter: _AboutMeBackgroundPainter(primaryColor: widget.waveColor ?? Theme.of(context).primaryColor, waveAnimation: waveAnimation)
             );
           },
         ),

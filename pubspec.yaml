@@ -38,6 +38,7 @@ dependencies:
   flutter_zoom_drawer: ^2.1.1
   sensors_plus: ^1.2.1
   timelines: ^0.1.0
+  carousel_slider: ^4.0.0
 
   flutter_localizations: 
     sdk: flutter  

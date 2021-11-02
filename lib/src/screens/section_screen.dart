@@ -33,7 +33,7 @@ class _SectionScreenState extends State<SectionScreen> {
       case '/Projects':
         return ProjectsScreen(heroTag: section.argument);
       default:
-        return const UnderConstruction();
+        return UnderConstruction(heroTag: section.argument);
     }
   }
 

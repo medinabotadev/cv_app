@@ -39,6 +39,7 @@ dependencies:
   sensors_plus: ^1.2.1
   timelines: ^0.1.0
   carousel_slider: ^4.0.0
+  animated_text_kit: ^4.2.1
 
   flutter_localizations: 
     sdk: flutter  
